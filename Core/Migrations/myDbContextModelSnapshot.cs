@@ -55,6 +55,29 @@ namespace Core.Migrations
                     b.ToTable("Departement_C");
                 });
 
+            modelBuilder.Entity("Core.Entities.Departement.DB.ProfDeparts", b =>
+                {
+                    b.Property<int>("ID_ProfDepart")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_ProfDepart"), 1L, 1);
+
+                    b.Property<int>("ID_Departement")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID_Prof")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID_ProfDepart");
+
+                    b.HasIndex("ID_Departement");
+
+                    b.HasIndex("ID_Prof");
+
+                    b.ToTable("ProfDeparts");
+                });
+
             modelBuilder.Entity("Core.Entities.Personnes.Etudiant.DB.Etudiant_C", b =>
                 {
                     b.Property<int>("PersonneId")
@@ -62,6 +85,9 @@ namespace Core.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonneId"), 1L, 1);
+
+                    b.Property<int>("Departement_CId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -81,6 +107,8 @@ namespace Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PersonneId");
+
+                    b.HasIndex("Departement_CId");
 
                     b.ToTable("Etudiant_C");
                 });
@@ -115,6 +143,48 @@ namespace Core.Migrations
                     b.HasKey("PersonneId");
 
                     b.ToTable("Professeur_C");
+                });
+
+            modelBuilder.Entity("Core.Entities.Departement.DB.ProfDeparts", b =>
+                {
+                    b.HasOne("Core.Entities.Departement.DB.Departement_C", "Departement")
+                        .WithMany("ProfDeparts")
+                        .HasForeignKey("ID_Departement")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Personnes.Professeur.DB.Professeur_C", "Professeur")
+                        .WithMany("ProfDeparts")
+                        .HasForeignKey("ID_Prof")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Departement");
+
+                    b.Navigation("Professeur");
+                });
+
+            modelBuilder.Entity("Core.Entities.Personnes.Etudiant.DB.Etudiant_C", b =>
+                {
+                    b.HasOne("Core.Entities.Departement.DB.Departement_C", "Departement_C")
+                        .WithMany("Etudiant_C")
+                        .HasForeignKey("Departement_CId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Departement_C");
+                });
+
+            modelBuilder.Entity("Core.Entities.Departement.DB.Departement_C", b =>
+                {
+                    b.Navigation("Etudiant_C");
+
+                    b.Navigation("ProfDeparts");
+                });
+
+            modelBuilder.Entity("Core.Entities.Personnes.Professeur.DB.Professeur_C", b =>
+                {
+                    b.Navigation("ProfDeparts");
                 });
 #pragma warning restore 612, 618
         }

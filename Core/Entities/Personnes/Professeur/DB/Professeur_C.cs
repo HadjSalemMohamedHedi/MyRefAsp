@@ -1,4 +1,6 @@
-﻿using Core.Entities.Personnes.Models.DB;
+﻿using Core.Entities.Departement.DB;
+using Core.Entities.Personnes.Models.DB;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Personnes.Professeur.DB
 {
@@ -6,5 +8,9 @@ namespace Core.Entities.Personnes.Professeur.DB
     {
         public string Matiere { get; set; }
         public string Bureau { get; set; }
+
+
+        public ICollection<ProfDeparts> ProfDeparts { get; set; }
+
     }
 }

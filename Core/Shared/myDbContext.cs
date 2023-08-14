@@ -22,6 +22,25 @@ namespace Core.Shared
         public DbSet<Departement_C> Departement_C { get; set; }
         public DbSet<Professeur_C> Professeur_C { get; set; }
 
+        public DbSet<ProfDeparts> ProfDeparts { get; set; }
 
-    }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder){
+
+            modelBuilder.Entity<ProfDeparts>()
+                .HasOne(pd => pd.Professeur)
+                .WithMany(p => p.ProfDeparts)
+                .HasForeignKey(pd => pd.ID_Prof);
+
+            modelBuilder.Entity<ProfDeparts>()
+                .HasOne(pd => pd.Departement)
+                .WithMany(d => d.ProfDeparts)
+                .HasForeignKey(pd => pd.ID_Departement);
+
+
+        
+        }
+
+   }
 }
